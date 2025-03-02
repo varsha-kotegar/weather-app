@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="weather-card">
+            <!-- Dark Mode Toggle -->
+            <button id="dark-mode-toggle">🌙</button>
+
+            <input type="text" id="city-input" placeholder="Search for a city..." onkeypress="handleKeyPress(event)">
+            <h2 id="city">Adyar, India</h2>
+            <p id="date"></p>
+            
+            <div class="weather-info">
+                <img id="weather-icon" src="" alt="Weather Icon">
+                <h1 id="temperature">--°C</h1>
+            </div>
+
+            <p id="condition"><i>Loading...</i></p>
+            <p id="minmax">--°C / --°C</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
