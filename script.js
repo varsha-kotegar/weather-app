@@ -1,5 +1,8 @@
 const apiKey = "13a860c100cdafd6a26b56ee7619d044"; // OpenWeather API key
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
+const apiForecastUrl = "https://api.openweathermap.org/data/2.5/forecast";
+
+
 
 // Function to fetch weather data
 async function fetchWeather(city) {
@@ -22,47 +25,69 @@ async function fetchWeather(city) {
         document.getElementById("minmax").textContent = `${minTemp}°C / ${maxTemp}°C`;
         document.getElementById("weather-icon").src = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
         
-        // Change background and animate icon
+        // Change background
         changeBackground(temperature);
-        document.getElementById("weather-icon").style.transform = "scale(1.2)";
-        setTimeout(() => {
-            document.getElementById("weather-icon").style.transform = "scale(1)";
-        }, 500);
+
+        // Fetch hourly forecast
+        fetchHourlyForecast(city);
     } catch (error) {
         alert("City not found. Please try again!");
     }
 }
 
-// Function to change background color dynamically
+
+
+// Function to fetch hourly forecast
+async function fetchHourlyForecast(city) {
+    try {
+        const response = await fetch(`${apiForecastUrl}?q=${city}&appid=${apiKey}&units=metric`);
+        if (!response.ok) throw new Error("Forecast not available");
+        const data = await response.json();
+        
+        const hourlyData = data.list.slice(0, 5); // Get next 5-hour forecast
+        let forecastHTML = "";
+        
+
+        
+        hourlyData.forEach(hour => {
+            const temp = Math.round(hour.main.temp);
+            const time = new Date(hour.dt_txt).getHours();
+            const icon = hour.weather[0].icon;
+
+            forecastHTML += `
+                <div class="hour">
+                    <img src="http://openweathermap.org/img/wn/${icon}@2x.png" width="30">
+                    <p>${time}:00</p>
+                    <p>${temp}°C</p>
+                </div>
+            `;
+        });
+
+        document.getElementById("hourly-forecast").innerHTML = forecastHTML;
+    } catch (error) {
+        console.error("Error fetching hourly forecast:", error);
+    }
+}
+
+// Function to change background dynamically
 function changeBackground(temperature) {
     let body = document.body;
 
     if (temperature >= 30) {
-        body.style.background = "linear-gradient(to bottom, #ff9800, #ff5722)"; // Hot (Orange-Red)
+        body.style.background = "linear-gradient(to bottom, #ff9800, #ff5722)";
     } else if (temperature >= 20) {
-        body.style.background = "linear-gradient(to bottom, #fbc02d, #ffeb3b)"; // Warm (Yellow)
-    } else if (temperature >= 10) {
-        body.style.background = "linear-gradient(to bottom, #4fc3f7, #2196f3)"; // Cool (Blue)
+        body.style.background = "linear-gradient(to bottom, #fbc02d, #ffeb3b)";
     } else {
-        body.style.background = "linear-gradient(to bottom, #37474f, #263238)"; // Cold (Dark Blue)
+        body.style.background = "linear-gradient(to bottom, #37474f, #263238)";
     }
 }
 
-// Function to handle search when pressing Enter
+// Event listener for search
 function handleKeyPress(event) {
     if (event.key === "Enter") {
-        
-        let city = document.getElementById("city-input").value;
-        fetchWeather(city);
+        fetchWeather(document.getElementById("city-input").value);
     }
 }
 
-// Dark Mode Toggle
-document.getElementById("dark-mode-toggle").addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    let toggleIcon = document.getElementById("dark-mode-toggle");
-    toggleIcon.textContent = document.body.classList.contains("dark-mode") ? "☀️" : "🌙";
-});
-
-// Load default weather for Adyar on page load
+// Load default weather
 fetchWeather("Adyar");
