@@ -1,41 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
     <div class="container">
-      <div class="weather-card">
-        <!-- Dark Mode Toggle -->
-        <button id="dark-mode-toggle">🌙</button>
-
-        <input
-          type="text"
-          id="city-input"
-          placeholder="Search for a city..."
-          onkeypress="handleKeyPress(event)"
-        />
-        <h2 id="city">Adyar, India</h2>
-        <p id="date"></p>
-
-        <div class="weather-info">
-          <img id="weather-icon" src="" alt="Weather Icon" />
-          <h1 id="temperature">--°C</h1>
+        <button id="darkModeToggle">🌙</button>
+        <h1>Weather App</h1>
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter city name">
+            <button onclick="getWeather()">Search</button>
         </div>
-
-        <p id="condition"><i>Loading...</i></p>
-        <p id="minmax">--°C / --°C</p>
-
-        <!-- Hourly Forecast -->
-        <div class="forecast">
-          <h3>Next 5 Hours</h3>
-          <div id="hourly-forecast"></div>
+        <div id="weatherDisplay" class="hidden">
+            <h2 id="cityName"></h2>
+            <p><i class="fas fa-thermometer-half"></i> <span id="temperature"></span></p>
+            <button id="tempToggle">°C/°F</button>
+            <p><i class="fas fa-cloud"></i> <span id="weatherCondition"></span></p>
+            <p><i class="fas fa-tint"></i> <span id="humidity"></span></p>
+            <p><i class="fas fa-wind"></i> <span id="windSpeed"></span></p>
         </div>
-      </div>
     </div>
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
