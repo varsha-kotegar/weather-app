@@ -1,4 +1,4 @@
-const apiKey = "13a860c100cdafd6a26b56ee7619d044"; 
+
 
 document.getElementById("darkModeToggle").addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
